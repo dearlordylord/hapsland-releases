@@ -14,12 +14,19 @@ On macOS arm64 or Linux arm64:
 
 ```sh
 brew install dearlordylord/tap/hapsland
-hapsland setup
+"$(brew --prefix hapsland)/bin/hapsland" setup --target="$(brew --prefix hapsland)/bin/hapsland"
 ```
 
 Hapsland includes Bun and its native assets; no external Node/Bun or source build is needed. Git and your coding agent must be available. Setup previews integration changes and asks before installing hooks. Jev credentials, when needed, belong in the masked setup prompt, not in chat. Package installation and offline checks make no review-provider request.
 
-Update the package with `brew upgrade dearlordylord/tap/hapsland`. Updating package bytes and activating hooks in an agent profile are separate actions; use the package's setup/update guidance.
+Update without cleaning old kegs, then explicitly activate the new package:
+
+```sh
+HOMEBREW_NO_INSTALL_CLEANUP=1 brew upgrade dearlordylord/tap/hapsland
+"$(brew --prefix hapsland)/bin/hapsland" update --target="$(brew --prefix hapsland)/bin/hapsland"
+```
+
+Do not remove old packages while hooks or running sessions still depend on them. The explicit Homebrew path avoids invoking another Hapsland earlier on PATH.
 
 ## Download directly
 
